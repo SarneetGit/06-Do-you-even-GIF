@@ -16,5 +16,9 @@ body {
 }
 
 .card {
-    margin-top: 12px;
+    margin-top: 25px;
+}
+
+.card img {
+    cursor: pointer;
 }
