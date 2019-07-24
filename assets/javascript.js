@@ -42,10 +42,17 @@ function addButton() {
     $("#submit").on("click", function () {
         $(".gifButton").unbind();
         event.preventDefault();
-        let name = $("#buttonInput").val()
-        console.log(name)
-        $("#buttonHolder").append(`<button type="button" class="btn btn-secondary gifButton" name="${name}">${name}</button>`)
-        displayShows();
+        let name = $("#buttonInput").val()        
+        console.log(name.length);
+        if (tvShows.includes(replaceSpace(name))) {
+            alert("Please enter a valid name.")
+        }
+        else {
+            tvShows.push(name)
+            console.log(name)
+            $("#buttonHolder").append(`<button type="button" class="btn btn-secondary gifButton" name="${name}">${name}</button>`)
+            displayShows();
+        }
     })
 }
 
@@ -57,16 +64,13 @@ function createButtons() {
 }
 
 function generateInputbar() {
-    $("#gifHolder1").append(`<div class="col-auto mr-auto"></div>`)
-    $("#gifHolder1").append(`<div class="col-auto">   
-                                <form>
-                                    <div class="form-group">
-                                        <label for="gifButton"><b>Create a GIF Button!</b></label>
-                                        <input type="input" class="form-control" id="buttonInput" aria-describedby="emailHelp" placeholder="Enter your GIF button">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-                                </form>
-                            </div>`)
+    $("#addGif").append(`<form>
+                            <div class="form-group">
+                                <label for="gifButton"><b>Create a GIF Button!</b></label>
+                                <input type="input" class="form-control" id="buttonInput" aria-describedby="emailHelp" placeholder="Enter your GIF button">
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                        </form>`)
 }
 
 function displayShows() {
@@ -75,7 +79,6 @@ function displayShows() {
         $("#gifHolder2").empty();
         $("#gifHolder3").empty();
         $("#gifHolder4").empty();
-        generateInputbar();
         let queryURL = 'https://api.giphy.com/v1/gifs/search?q=' + replaceSpace($(this).attr("name")) + '&limit=10&api_key=dc6zaTOxFJmzC'
 
         $.ajax({
@@ -83,9 +86,19 @@ function displayShows() {
             method: "GET"
         }).then(function (response) {
             for (let i = 0; i < 10; i++) {
-                if (i === 0) {
-                    console.log(response.data[i])
-                    $("#gifHolder1").prepend(`<div class="col-auto mr-auto">
+                // if (i === 0) {
+                //     console.log(response.data[i])
+                //     $("#gifHolder1").prepend(`<div class="col-auto mr-auto">
+                //                                 <div class="card" style="width: ${response.data[i].images.fixed_height_still.width}px;">
+                //                                     <img src="${response.data[i].images.fixed_height_still.url}" style="height: 200px;" state="still" dataStill=${response.data[i].images.fixed_height_still.url} dataAnimate=${response.data[i].images.fixed_height.url} class="card-img-top" alt="I am Daku">
+                //                                     <div class="card-body ">
+                //                                         <h5 class="card-title text-center">Rating is ${response.data[i].rating.toUpperCase()}</h5>
+                //                                     </div>
+                //                                 </div>
+                //                             </div>`)
+                // }
+                if (i >= 0 && i < 4) {
+                    $("#gifHolder1").append(`<div class="col-lg-auto">
                                                 <div class="card" style="width: ${response.data[i].images.fixed_height_still.width}px;">
                                                     <img src="${response.data[i].images.fixed_height_still.url}" style="height: 200px;" state="still" dataStill=${response.data[i].images.fixed_height_still.url} dataAnimate=${response.data[i].images.fixed_height.url} class="card-img-top" alt="I am Daku">
                                                     <div class="card-body ">
@@ -94,7 +107,7 @@ function displayShows() {
                                                 </div>
                                             </div>`)
                 }
-                else if (i > 0 && i < 4) {
+                else if (i > 3 && i < 8) {
                     $("#gifHolder2").append(`<div class="col-lg-auto">
                                                 <div class="card" style="width: ${response.data[i].images.fixed_height_still.width}px;">
                                                     <img src="${response.data[i].images.fixed_height_still.url}" style="height: 200px;" state="still" dataStill=${response.data[i].images.fixed_height_still.url} dataAnimate=${response.data[i].images.fixed_height.url} class="card-img-top" alt="I am Daku">
@@ -104,18 +117,8 @@ function displayShows() {
                                                 </div>
                                             </div>`)
                 }
-                else if (i > 3 && i < 7) {
-                    $("#gifHolder3").append(`<div class="col-lg-auto">
-                                                <div class="card" style="width: ${response.data[i].images.fixed_height_still.width}px;">
-                                                    <img src="${response.data[i].images.fixed_height_still.url}" style="height: 200px;" state="still" dataStill=${response.data[i].images.fixed_height_still.url} dataAnimate=${response.data[i].images.fixed_height.url} class="card-img-top" alt="I am Daku">
-                                                    <div class="card-body ">
-                                                        <h5 class="card-title text-center">Rating is ${response.data[i].rating.toUpperCase()}</h5>
-                                                    </div>
-                                                </div>
-                                            </div>`)
-                }
                 else {
-                    $("#gifHolder4").append(`<div class="col-lg-auto">
+                    $("#gifHolder3").append(`<div class="col-lg-auto">
                                                 <div class="card" style="width: ${response.data[i].images.fixed_height_still.width}px;">
                                                     <img src="${response.data[i].images.fixed_height_still.url}" style="height: 200px;" state="still" dataStill=${response.data[i].images.fixed_height_still.url} dataAnimate=${response.data[i].images.fixed_height.url} class="card-img-top" alt="I am Daku">
                                                     <div class="card-body ">
@@ -141,6 +144,8 @@ createButtons();
 generateInputbar();
 
 displayShows();
+
+addButton();
 
 
 
