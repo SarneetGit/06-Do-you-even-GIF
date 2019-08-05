@@ -44,11 +44,11 @@ function addButton() {
         event.preventDefault();
         let name = $("#buttonInput").val()        
         console.log(name.length);
-        if (tvShows.includes(replaceSpace(name))) {
+        if (tvShows.includes(replaceSpace(name)) || name.length === 0) {
             alert("Please enter a valid name.")
-        }
+        }   
         else {
-            tvShows.push(name)
+            tvShows.push(replaceSpace(name))
             console.log(name)
             $("#buttonHolder").append(`<button type="button" class="btn btn-secondary gifButton" name="${name}">${name}</button>`)
             displayShows();
